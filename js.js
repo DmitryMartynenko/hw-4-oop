@@ -1,25 +1,25 @@
-// MEAL constractor
+// MEAL constructor
 function Meal(price, calories) {
     this.calories = calories;
     this.price = price;
-};
+}
 
 Meal.prototype.getPrice = function () {
-    console.log(`The price of ${this.type} is`)
+    console.log(`The price of ${this.type}  is`);
     return this.price
 };
 
 Meal.prototype.getCalories = function () {
-    console.log(`The calories of ${this.type} is`)
+    console.log(`The calories of ${this.type} is`);
     return this.calories
 };
 
-//HAMBURGER constractor
+//HAMBURGER constructor
 function Hamburger(price, calories, type, stuffing) {
     Meal.call(this, price, calories);
     this.type = type;
     this.stuffing = stuffing;
-};
+}
 
 Hamburger.prototype = Object.create(Meal.prototype);
 Hamburger.prototype.constructor = Hamburger;
@@ -28,15 +28,15 @@ Hamburger.prototype.getTotalCalories = function () {
     for (var i = 0; i < this.stuffing; i++) {
         totalCalories += this.stuffing[i].calories;
     }
-    console.log(`The total calories of ${this.type} is`)
+    console.log(`The total calories of ${this.type} is`);
     return totalCalories;
 };
 
-//STUFFING constractor
+//STUFFING constructor
 function Stuffing(price, calories, type) {
     Meal.call(this, price, calories);
     this.type = type;
-};
+}
 
 Stuffing.prototype = Object.create(Meal.prototype);
 Stuffing.prototype.constructor = Stuffing;
@@ -53,61 +53,74 @@ var largeHamburger = new Hamburger(100, 40, "LARGE_BURGER", potato);
 function Salad(price, calories, type, weight) {
     Meal.call(this, price, calories);
     this.type = type;
-    this.price = price/100*weight;;
-    this.weight = weight
+    this.price = price;
+    this.weight = weight;
 }
 
 Salad.prototype = Object.create(Meal.prototype);
 Salad.prototype.constructor = Salad;
 Salad.prototype.getPrice = function () {
-    console.log(`The price ${this.weight} g of ${this.type} is`)
-    return this.price
-}
+    console.log(`The price ${this.weight} g of ${this.type} is`);
+    return this.price/100*this.weight
+};
 
 var caesarSalad = new Salad(100, 20, 'CAESAR_SALAD', 150);
 var winterSalad = new Salad(50, 80, 'WINTER_SALAD', 1000);
 
-//DRINKS constractor
+//DRINKS constructor
 function Drink(price, calories, type) {
     Meal.call(this, price, calories);
     this.type = type;
-
 }
 
 Drink.prototype = Object.create(Meal.prototype);
 Drink.prototype.constructor = Drink;
 
 var cola = new Drink(50, 40, 'COLA');
-var coffe = new Drink(80, 20, 'COFFE');
+var coffee = new Drink(80, 20, 'COFFEE');
 
-//ORDERS constractor
+//ORDERS constructor
 function Order(meals) {
     this.meals = meals;
-
 }
 
-//ORDERS constractor
+//ORDERS constructor
 Order.prototype.getTotalCalories = function () {
     var totalCalories = 0;
     for (var i = 0; i < this.meals.length; i++) {
         totalCalories += this.meals[i].calories;
     }
-    console.log(`The total calories of order is`)
+    console.log(`The total calories of order is`);
     return totalCalories
 };
 
 Order.prototype.getTotalPrice = function () {
-    var TotalPrice = 0;
+    var totalPrice = 0;
     for (var i = 0; i < this.meals.length; i++) {
-        TotalPrice += this.meals[i].price;
+        totalPrice += this.meals[i].price;
     }
     console.log(`The total price of this order is`);
-    return TotalPrice
+    return totalPrice
+};
+
+Order.prototype.removeMeal = function(meal) {
+    var listOfMealsObj = this.meals;
+
+    function newStringArrayOfMeal1s() {
+        var newStringMeals = [];
+        for (var i = 0; i < listOfMealsObj.length; i++) {
+           newStringMeals.push(listOfMealsObj[i].type);
+        }
+        return newStringMeals
+    }
+    var newStringMeals = newStringArrayOfMeal1s();
+
+return this.meals.splice(newStringMeals.indexOf(meal), 1);
+
 };
 
 function PayForOrder(order) {
     Order.call(this, order);
-
 }
 
 // TESTS
@@ -125,9 +138,15 @@ console.log(winterSalad.getCalories());
 console.log(winterSalad.getPrice());
 
 console.log(cola.getCalories());
-console.log(coffe.getPrice());
+console.log(coffee.getPrice());
 
 // ORDER HERE
-var newOrder = new Order([smallHamburger,salad,potato,cheese,coffe,winterSalad]);
+var newOrder = new Order([smallHamburger,salad,potato,cheese,coffee,winterSalad]);
 console.log(newOrder.getTotalCalories());
 console.log(newOrder.getTotalPrice());
+
+// REMOVE ANYTHING
+var newOrderForRemove = newOrder;
+newOrderForRemove.removeMeal("CHEESE");
+console.log(newOrderForRemove.getTotalCalories());
+console.log(newOrderForRemove.getTotalPrice());
