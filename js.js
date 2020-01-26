@@ -90,8 +90,8 @@ Order.prototype.getTotalCalories = function () {
     for (var i = 0; i < this.meals.length; i++) {
         totalCalories += this.meals[i].calories;
     }
-    console.log(`The total calories of order is`);
-    return totalCalories
+    console.log(`The calories of these meals:`);
+     return totalCalories
 };
 
 Order.prototype.getTotalPrice = function () {
@@ -99,29 +99,18 @@ Order.prototype.getTotalPrice = function () {
     for (var i = 0; i < this.meals.length; i++) {
         totalPrice += this.meals[i].price;
     }
-    console.log(`The total price of this order is`);
-    return totalPrice
+    console.log(`The price of these meals:`);
+     return totalPrice
 };
 
 Order.prototype.removeMeal = function(meal) {
-    var listOfMealsObj = this.meals;
-
-    function newStringArrayOfMeal1s() {
-        var newStringMeals = [];
-        for (var i = 0; i < listOfMealsObj.length; i++) {
-           newStringMeals.push(listOfMealsObj[i].type);
-        }
-        return newStringMeals
+    var indexOfMeal = this.meals.indexOf(meal);
+    if (indexOfMeal > -1) {
+    return this.meals.splice(indexOfMeal, 1);
     }
-    var newStringMeals = newStringArrayOfMeal1s();
-
-return this.meals.splice(newStringMeals.indexOf(meal), 1);
-
+    console.log('You have no this type of meal in your order.')
 };
 
-function PayForOrder(order) {
-    Order.call(this, order);
-}
 
 // TESTS
 console.log(smallHamburger.getTotalCalories());
@@ -147,6 +136,6 @@ console.log(newOrder.getTotalPrice());
 
 // REMOVE ANYTHING
 var newOrderForRemove = newOrder;
-newOrderForRemove.removeMeal("CHEESE");
+newOrderForRemove.removeMeal(cheese);
 console.log(newOrderForRemove.getTotalCalories());
 console.log(newOrderForRemove.getTotalPrice());
